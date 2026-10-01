@@ -1,0 +1,17 @@
+node_modules
+dist
+dist-ssr
+*.local
+.DS_Store
+
+# Environment files (keep .env.example committed)
+.env
+.env.*
+!.env.example
+
+# Firebase local tooling
+.firebase/
+firebase-debug.log*
+# Never commit service-account / Admin SDK keys
+*serviceAccount*.json
+*-firebase-adminsdk-*.json

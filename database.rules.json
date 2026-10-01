@@ -1,0 +1,116 @@
+{
+  "rules": {
+    "admins": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": false
+      }
+    },
+
+    "resume": {
+      ".read": true,
+      ".write": "auth != null && root.child('admins').child(auth.uid).exists()",
+      ".validate": "newData.hasChildren(['fileName', 'fileData', 'mimeType', 'updatedAt'])",
+      "fileName": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 255" },
+      "fileData": { ".validate": "newData.isString() && newData.val().length <= 5592408" },
+      "mimeType": { ".validate": "newData.val() === 'application/pdf'" },
+      "updatedAt": { ".validate": "newData.isNumber()" }
+    },
+
+    "projects": {
+      ".read": true,
+      ".indexOn": ["order"],
+      "$projectId": {
+        ".write": "auth != null && root.child('admins').child(auth.uid).exists()",
+        ".validate": "newData.hasChildren(['name', 'description', 'category', 'technologies', 'featured', 'order'])",
+        "name": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 120" },
+        "description": { ".validate": "newData.isString() && newData.val().length <= 2000" },
+        "category": { ".validate": "newData.val() === 'Web Development' || newData.val() === 'AI / Data' || newData.val() === 'Hardware' || newData.val() === 'Design'" },
+        "featured": { ".validate": "newData.isBoolean()" },
+        "order": { ".validate": "newData.isNumber()" },
+        "imageUrl": { ".validate": "newData.isString() && newData.val().length <= 600000" },
+        "images": {
+          "$imageIndex": {
+            ".validate": "$imageIndex.matches(/^(0|1|2|3|4|5|6|7)$/) && newData.hasChildren(['id', 'url'])",
+            "id": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 120" },
+            "url": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 600000" },
+            "alt": { ".validate": "newData.isString() && newData.val().length <= 200" },
+            "$other": { ".validate": false }
+          }
+        },
+        "isPublished": { ".validate": "newData.isBoolean()" }
+      }
+    },
+
+    "activities": {
+      ".read": "auth != null && root.child('admins').child(auth.uid).exists()",
+      ".write": "auth != null && root.child('admins').child(auth.uid).exists()",
+      "$activityId": {
+        ".validate": "newData.hasChildren(['name', 'description', 'isPublished'])",
+        "name": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 120" },
+        "description": { ".validate": "newData.isString() && newData.val().length <= 2000" },
+        "category": { ".validate": "newData.isString() && newData.val().length <= 120" },
+        "date": { ".validate": "newData.isString() && newData.val().length <= 120" },
+        "location": { ".validate": "newData.isString() && newData.val().length <= 240" },
+        "role": { ".validate": "newData.isString() && newData.val().length <= 240" },
+        "imageUrl": { ".validate": "newData.isString() && newData.val().length <= 600000" },
+        "images": {
+          "$imageIndex": {
+            ".validate": "$imageIndex.matches(/^(0|1|2|3|4|5|6|7)$/) && newData.hasChildren(['id', 'url'])",
+            "id": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 120" },
+            "url": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 600000" },
+            "alt": { ".validate": "newData.isString() && newData.val().length <= 200" },
+            "$other": { ".validate": false }
+          }
+        },
+        "isPublished": { ".validate": "newData.isBoolean()" },
+        "createdAt": { ".validate": "newData.isNumber()" },
+        "updatedAt": { ".validate": "newData.isNumber()" },
+        "$other": { ".validate": false }
+      }
+    },
+
+    "publishedActivities": {
+      ".read": true,
+      ".write": "auth != null && root.child('admins').child(auth.uid).exists()",
+      "$activityId": {
+        ".validate": "newData.hasChildren(['name', 'description', 'isPublished']) && newData.child('isPublished').val() === true",
+        "name": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 120" },
+        "description": { ".validate": "newData.isString() && newData.val().length <= 2000" },
+        "category": { ".validate": "newData.isString() && newData.val().length <= 120" },
+        "date": { ".validate": "newData.isString() && newData.val().length <= 120" },
+        "location": { ".validate": "newData.isString() && newData.val().length <= 240" },
+        "role": { ".validate": "newData.isString() && newData.val().length <= 240" },
+        "imageUrl": { ".validate": "newData.isString() && newData.val().length <= 600000" },
+        "images": {
+          "$imageIndex": {
+            ".validate": "$imageIndex.matches(/^(0|1|2|3|4|5|6|7)$/) && newData.hasChildren(['id', 'url'])",
+            "id": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 120" },
+            "url": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 600000" },
+            "alt": { ".validate": "newData.isString() && newData.val().length <= 200" },
+            "$other": { ".validate": false }
+          }
+        },
+        "isPublished": { ".validate": "newData.isBoolean() && newData.val() === true" },
+        "createdAt": { ".validate": "newData.isNumber()" },
+        "updatedAt": { ".validate": "newData.isNumber()" },
+        "$other": { ".validate": false }
+      }
+    },
+
+    "profile": {
+      ".read": true,
+      ".write": "auth != null && root.child('admins').child(auth.uid).exists()",
+      "name": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 120" },
+      "tagline": { ".validate": "newData.isString() && newData.val().length <= 200" },
+      "bio": { ".validate": "newData.isString() && newData.val().length <= 3000" },
+      "about": { ".validate": "newData.isString() && newData.val().length <= 6000" },
+      "avatarUrl": { ".validate": "newData.isString() && newData.val().length <= 300000" }
+    },
+
+    "$other": {
+      ".read": false,
+      ".write": false
+    }
+  }
+}
