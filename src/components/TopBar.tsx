@@ -20,7 +20,7 @@ export function TopBar({ searchValue, onSearchChange, theme, onToggleTheme }: To
   const { profile } = usePortfolioData()
 
   return (
-    <header className="sticky top-0 z-20 flex items-center justify-between gap-3 px-4 md:px-8 h-16 border-b border-light-border dark:border-base-border bg-light-bg/90 dark:bg-base-bg/90 backdrop-blur-sm">
+    <header className="sticky top-0 z-20 flex h-16 items-center justify-between gap-3 border-b border-light-border bg-light-bg/90 px-4 backdrop-blur-sm dark:border-base-border dark:bg-base-bg/90 md:top-16 md:px-8">
       <SearchBar value={searchValue} onChange={onSearchChange} />
 
       <div className="flex items-center gap-3 shrink-0">

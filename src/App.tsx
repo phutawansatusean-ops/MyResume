@@ -50,7 +50,7 @@ export default function App() {
       <Sidebar activePage={activePage} onNavigate={setActivePage} />
       <MobileNav activePage={activePage} onNavigate={setActivePage} />
 
-      <div className="md:pl-[76px] lg:pl-[232px] pb-20 md:pb-0">
+      <div className="pb-20 md:pb-0">
         <TopBar
           searchValue={searchQuery}
           onSearchChange={handleSearchChange}
@@ -94,8 +94,8 @@ export default function App() {
                   </section>
                   <section className="relative overflow-hidden bg-[#17352d] px-5 py-8 text-white dark:bg-[#142a24] md:px-9 md:py-10">
                     <div className="relative flex flex-col justify-between gap-6 sm:flex-row sm:items-center">
-                      <div><p className="font-mono text-xs uppercase tracking-[0.12em] text-accent">Get in touch</p><h2 className="mt-2 font-display text-2xl font-semibold md:text-3xl">Have something in mind?</h2><p className="mt-2 max-w-xl text-sm leading-relaxed text-white/70">Reach out to discuss a project, collaboration, or opportunity.</p></div>
-                      <a href={`mailto:${profile.email}`} className="inline-flex min-h-11 shrink-0 items-center justify-center border border-white/25 px-4 text-sm font-semibold transition-colors hover:bg-white hover:text-[#17352d]">Contact me <span className="ml-2" aria-hidden="true">↗</span></a>
+                      <div><p className="font-mono text-xs uppercase tracking-[0.12em] text-accent">Get in touch</p><h2 className="mt-2 font-display text-2xl font-semibold md:text-3xl">Have a project, internship, or collaboration in mind?</h2><p className="mt-2 max-w-xl text-sm leading-relaxed text-white/70">Reach out to discuss a project, collaboration, or opportunity.</p></div>
+                      <button type="button" onClick={() => setActivePage('contact')} className="inline-flex min-h-11 shrink-0 items-center justify-center border border-white/25 px-4 text-sm font-semibold transition-colors hover:bg-white hover:text-[#17352d]">Contact me <span className="ml-2" aria-hidden="true">↗</span></button>
                     </div>
                   </section>
                 </>
