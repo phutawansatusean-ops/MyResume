@@ -35,7 +35,7 @@ export function Modal({ title, onClose, children, maxWidthClassName = 'max-w-lg'
         className={`w-full ${maxWidthClassName} max-h-[85vh] overflow-y-auto rounded-card border border-light-border dark:border-base-border bg-light-card dark:bg-base-card shadow-soft`}
       >
         <div className="sticky top-0 flex items-center justify-between px-5 md:px-6 py-4 border-b border-light-border dark:border-base-border bg-light-card dark:bg-base-card">
-          <h2 className="font-semibold text-[15px] text-light-primary dark:text-text-primary">{title}</h2>
+          <h2 className="font-display font-semibold text-base text-light-primary dark:text-text-primary">{title}</h2>
           <button
             onClick={onClose}
             aria-label="Close dialog"

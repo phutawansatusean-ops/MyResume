@@ -26,8 +26,8 @@ export function ActivitySection({ activities, searchQuery, onViewDetails, onAddC
   return (
     <section>
       <div className="mb-4 flex items-center justify-between gap-4">
-        <h2 className="text-lg font-semibold text-light-primary dark:text-text-primary">{title}</h2>
-        {onAddClick && <button type="button" onClick={onAddClick} className="flex items-center gap-1.5 rounded-lg bg-accent px-3.5 py-2 text-sm font-medium text-white transition-colors hover:bg-accent/90"><Plus size={16} /> Add Activity</button>}
+        <div><p className="portfolio-eyebrow">Experiences &amp; involvement</p><h2 className="portfolio-heading mt-2 text-2xl md:text-3xl">{title}</h2></div>
+        {onAddClick && <button type="button" onClick={onAddClick} className="flex min-h-10 items-center gap-1.5 bg-accent px-3.5 py-2 text-sm font-semibold text-[#10221c] transition-colors hover:bg-accent/85"><Plus size={16} /> Add Activity</button>}
       </div>
       {categories.length > 0 && <div className="mb-5 flex flex-wrap gap-2" aria-label="Filter activities by category">
         {['All', ...categories].map((item) => <button key={item} type="button" onClick={() => setCategory(item)} aria-pressed={category === item} className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors ${category === item ? 'border-accent bg-accent/10 text-accent' : 'border-light-border text-light-secondary hover:border-accent/40 dark:border-base-border dark:text-text-secondary'}`}>{item}</button>)}

@@ -17,7 +17,7 @@ const navItems: { id: Page; label: string; icon: typeof Home }[] = [
 export function MobileNav({ activePage, onNavigate }: MobileNavProps) {
   return (
     <nav
-      className="md:hidden fixed bottom-0 left-0 right-0 z-30 border-t border-light-border dark:border-base-border bg-light-card/95 dark:bg-base-bg/95 backdrop-blur-sm"
+      className="md:hidden fixed bottom-0 left-0 right-0 z-30 border-t border-light-border dark:border-base-border bg-light-card/95 dark:bg-base-bg/95 backdrop-blur-sm shadow-[0_-8px_24px_rgba(10,20,16,0.06)]"
       style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
       aria-label="Primary"
     >
@@ -29,7 +29,7 @@ export function MobileNav({ activePage, onNavigate }: MobileNavProps) {
               key={id}
               onClick={() => onNavigate(id)}
               aria-current={isActive ? 'page' : undefined}
-              className={`flex min-w-0 flex-1 flex-col items-center gap-1 py-2.5 px-1 text-[10px] font-medium leading-tight transition-colors ${
+              className={`relative flex min-w-0 flex-1 flex-col items-center gap-1 py-2.5 px-1 text-[10px] font-medium leading-tight transition-colors ${
                 isActive
                   ? 'text-accent'
                   : 'text-light-secondary dark:text-text-secondary'

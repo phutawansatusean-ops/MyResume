@@ -6,35 +6,36 @@ export default {
     extend: {
       colors: {
         base: {
-          bg: '#080B10',
-          card: '#111720',
-          border: '#202936',
+          bg: '#0B100F',
+          card: '#111A18',
+          border: '#263633',
         },
         text: {
           primary: '#F5F7FA',
           secondary: '#9CA6B5',
         },
         accent: {
-          DEFAULT: '#5B8DEF',
-          soft: '#3A4A63',
-          muted: '#2A3444',
+          DEFAULT: '#43C6A2',
+          soft: '#244B41',
+          muted: '#1D3932',
         },
         light: {
-          bg: '#F7F8FA',
+          bg: '#F3F6F2',
           card: '#FFFFFF',
-          border: '#E4E8EE',
-          primary: '#12161C',
-          secondary: '#5D6773',
+          border: '#DDE6E0',
+          primary: '#15211D',
+          secondary: '#5B6B64',
         },
       },
       fontFamily: {
-        sans: ['Inter', 'Noto Sans Thai', 'sans-serif'],
+        sans: ['DM Sans', 'Noto Sans Thai', 'sans-serif'],
+        display: ['Space Grotesk', 'Noto Sans Thai', 'sans-serif'],
       },
       boxShadow: {
         soft: '0 1px 2px rgba(0,0,0,0.24), 0 8px 24px -12px rgba(0,0,0,0.4)',
       },
       borderRadius: {
-        card: '14px',
+        card: '10px',
       },
     },
   },

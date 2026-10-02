@@ -46,7 +46,7 @@ export function ResumeDownloadButton() {
         type="button"
         onClick={() => void handleDownload()}
         disabled={downloading}
-        className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-accent text-white hover:bg-accent/90 disabled:opacity-60 transition-colors"
+        className="inline-flex min-h-11 items-center gap-2 bg-accent px-4 text-sm font-semibold text-[#10221c] transition-colors hover:bg-accent/85 disabled:opacity-60"
       >
         {downloading ? <Loader2 size={15} className="animate-spin" /> : <Download size={15} />}
         Download Resume

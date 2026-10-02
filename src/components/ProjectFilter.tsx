@@ -22,7 +22,7 @@ export function ProjectFilter({ active, onChange }: ProjectFilterProps) {
             onClick={() => onChange(filter)}
             className={`px-3.5 py-1.5 rounded-lg text-sm font-medium border transition-colors ${
               isActive
-                ? 'bg-accent text-white border-accent'
+                ? 'bg-accent text-[#10221c] border-accent'
                 : 'border-light-border dark:border-base-border text-light-secondary dark:text-text-secondary hover:text-light-primary dark:hover:text-text-primary hover:border-accent/40'
             }`}
           >

@@ -47,11 +47,12 @@ export function AdminLogin() {
           Back to portfolio
         </Link>
 
-        <div className="rounded-card border border-light-border dark:border-base-border bg-light-card dark:bg-base-card p-6 shadow-soft">
-          <div className="w-10 h-10 rounded-lg bg-accent/15 flex items-center justify-center mb-4">
+        <div className="rounded-card border border-light-border dark:border-base-border bg-light-card dark:bg-base-card p-6 shadow-soft md:p-8">
+          <div className="mb-5 flex h-10 w-10 items-center justify-center border border-accent/25 bg-accent/10">
             <Lock size={18} className="text-accent" />
           </div>
-          <h1 className="text-xl font-bold tracking-tight text-light-primary dark:text-text-primary">Admin login</h1>
+          <p className="portfolio-eyebrow mb-2">Portfolio management</p>
+          <h1 className="font-display text-2xl font-semibold text-light-primary dark:text-text-primary">Admin login</h1>
           <p className="mt-1 text-sm text-light-secondary dark:text-text-secondary">Sign in to manage your portfolio.</p>
 
           {!isFirebaseConfigured && (

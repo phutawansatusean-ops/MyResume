@@ -1,23 +1,4 @@
-import { Code2, Cpu, Lightbulb } from 'lucide-react'
 import { Profile } from '../types/profile'
-
-const focusAreas = [
-  {
-    icon: Code2,
-    title: 'Software Development',
-    description: 'Building web and mobile applications with React, Flutter, and Python.',
-  },
-  {
-    icon: Cpu,
-    title: 'AI & Data',
-    description: 'Applying machine learning and data analysis to real-world problems.',
-  },
-  {
-    icon: Lightbulb,
-    title: 'Problem Solving',
-    description: 'Drawn to challenges in sustainability, health, and community impact.',
-  },
-]
 
 interface AboutMeProps {
   profile: Profile
@@ -30,46 +11,33 @@ export function AboutMe({ profile }: AboutMeProps) {
     .filter(Boolean)
 
   return (
-    <section className="max-w-2xl">
-      <h1 className="text-2xl font-bold tracking-tight text-light-primary dark:text-text-primary mb-4">
-        About Me
-      </h1>
+    <section className="max-w-4xl">
+      <p className="portfolio-eyebrow">A little about me</p>
+      <h1 className="portfolio-heading mb-6 mt-2 text-3xl md:text-4xl">About Me</h1>
 
-      <div className="rounded-card border border-light-border dark:border-base-border bg-light-card dark:bg-base-card p-6">
-        <p className="text-[15px] leading-relaxed text-light-secondary dark:text-text-secondary">{profile.bio}</p>
+      <div className="portfolio-panel grid gap-6 p-6 md:grid-cols-[minmax(0,1fr)_12rem] md:gap-10 md:p-9">
+        <div>
+        <p className="text-base leading-8 text-light-secondary dark:text-text-secondary">{profile.bio}</p>
         {paragraphs.map((paragraph) => (
-          <p key={paragraph} className="mt-3 text-[15px] leading-relaxed text-light-secondary dark:text-text-secondary">
+          <p key={paragraph} className="mt-4 text-base leading-8 text-light-secondary dark:text-text-secondary">
             {paragraph}
           </p>
         ))}
-      </div>
-
-      <div className="mt-8">
-        <h2 className="text-lg font-semibold text-light-primary dark:text-text-primary mb-4">Education</h2>
-        <div className="rounded-card border border-light-border dark:border-base-border bg-light-card dark:bg-base-card p-5">
-          <h3 className="text-sm font-semibold text-light-primary dark:text-text-primary">Thammasat University</h3>
-          <p className="mt-1 text-sm text-light-secondary dark:text-text-secondary">Software Engineering</p>
+        </div>
+        <div className="border-t border-light-border pt-5 md:border-l md:border-t-0 md:pl-6 md:pt-0 dark:border-base-border">
+          <p className="portfolio-eyebrow">Based in</p>
+          <p className="mt-2 text-sm font-semibold text-light-primary dark:text-text-primary">{profile.location}</p>
+          <p className="portfolio-eyebrow mt-6">Email</p>
+          <a href={`mailto:${profile.email}`} className="portfolio-link mt-2 block break-words text-sm text-light-primary dark:text-text-primary">{profile.email}</a>
         </div>
       </div>
 
-      <h2 className="text-lg font-semibold text-light-primary dark:text-text-primary mt-8 mb-4">
-        Focus Areas
-      </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        {focusAreas.map(({ icon: Icon, title, description }) => (
-          <div
-            key={title}
-            className="rounded-card border border-light-border dark:border-base-border bg-light-card dark:bg-base-card p-5"
-          >
-            <div className="w-9 h-9 rounded-lg bg-accent/15 flex items-center justify-center mb-3">
-              <Icon size={17} className="text-accent" />
-            </div>
-            <h3 className="text-sm font-semibold text-light-primary dark:text-text-primary mb-1">{title}</h3>
-            <p className="text-sm text-light-secondary dark:text-text-secondary leading-relaxed">
-              {description}
-            </p>
-          </div>
-        ))}
+      <div className="mt-8">
+        <p className="portfolio-eyebrow">Education</p>
+        <div className="portfolio-panel mt-3 flex flex-col justify-between gap-3 p-5 sm:flex-row sm:items-center md:p-6">
+          <h2 className="font-display text-lg font-semibold text-light-primary dark:text-text-primary">Thammasat University</h2>
+          <p className="mt-1 text-sm text-light-secondary dark:text-text-secondary">Software Engineering</p>
+        </div>
       </div>
     </section>
   )

@@ -12,7 +12,8 @@ export function FeaturedProjects({ projects, onViewDetails }: FeaturedProjectsPr
 
   return (
     <section>
-      <h2 className="text-lg font-semibold text-light-primary dark:text-text-primary mb-4">
+      <p className="portfolio-eyebrow">Selected work</p>
+      <h2 className="portfolio-heading mb-5 mt-2 text-2xl md:text-3xl">
         Featured Projects
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

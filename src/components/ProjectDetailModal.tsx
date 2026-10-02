@@ -19,13 +19,13 @@ export function ProjectDetailModal({ project, onClose }: ProjectDetailModalProps
             {project.technologies.map((tech) => (
               <span
                 key={tech}
-                className="text-[11px] font-medium px-2 py-0.5 rounded-md bg-accent/10 text-accent"
+                className="border border-accent/20 px-2 py-1 font-mono text-[10px] text-accent"
               >
                 {tech}
               </span>
             ))}
           </div>
-          <p className="text-sm text-light-secondary dark:text-text-secondary leading-relaxed">
+          <p className="text-sm text-light-secondary dark:text-text-secondary leading-7">
             {project.description}
           </p>
         </div>
@@ -80,7 +80,7 @@ export function ProjectDetailModal({ project, onClose }: ProjectDetailModalProps
                 href={project.projectUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-1.5 text-sm font-medium px-3.5 py-2 rounded-lg bg-accent text-white hover:bg-accent/90 transition-colors"
+                className="flex min-h-10 items-center gap-1.5 px-3.5 py-2 text-sm font-semibold text-[#10221c] bg-accent hover:bg-accent/85 transition-colors"
               >
                 <ExternalLink size={15} />
                 Project URL

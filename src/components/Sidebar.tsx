@@ -25,7 +25,7 @@ export function Sidebar({ activePage, onNavigate }: SidebarProps) {
           <Compass size={18} className="text-accent" strokeWidth={2.25} />
         </div>
         <span className="hidden lg:block font-semibold text-[15px] tracking-tight text-light-primary dark:text-text-primary">
-          MyResume
+          Portfolio
         </span>
       </div>
 
@@ -41,7 +41,7 @@ export function Sidebar({ activePage, onNavigate }: SidebarProps) {
               className={`group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors
                 ${
                   isActive
-                    ? 'bg-accent/15 text-accent'
+                    ? 'bg-accent/10 text-accent ring-1 ring-inset ring-accent/20'
                     : 'text-light-secondary dark:text-text-secondary hover:bg-light-bg dark:hover:bg-base-card hover:text-light-primary dark:hover:text-text-primary'
                 }`}
             >

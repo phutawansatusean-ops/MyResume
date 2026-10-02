@@ -9,11 +9,11 @@ interface ProjectCardProps {
 
 export function ProjectCard({ project, onViewDetails }: ProjectCardProps) {
   return (
-    <div className="group flex flex-col rounded-card border border-light-border dark:border-base-border bg-light-card dark:bg-base-card overflow-hidden transition-colors hover:border-accent/40">
-      <ProjectCover project={project} className="h-36 w-full" />
+    <div className="portfolio-panel group flex flex-col overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-accent/50 hover:shadow-soft">
+      <ProjectCover project={project} className="aspect-[16/10] w-full" />
 
       <div className="flex flex-col flex-1 p-4">
-        <h3 className="font-semibold text-[15px] text-light-primary dark:text-text-primary">
+        <h3 className="font-display text-lg font-semibold text-light-primary dark:text-text-primary">
           {project.title}
         </h3>
         <p className="mt-1 text-sm text-light-secondary dark:text-text-secondary line-clamp-2">
@@ -24,7 +24,7 @@ export function ProjectCard({ project, onViewDetails }: ProjectCardProps) {
           {project.technologies.map((tech) => (
             <span
               key={tech}
-              className="text-[11px] font-medium px-2 py-0.5 rounded-md bg-accent/10 text-accent"
+              className="border border-accent/20 px-2 py-1 font-mono text-[10px] text-accent"
             >
               {tech}
             </span>

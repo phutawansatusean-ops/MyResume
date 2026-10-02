@@ -9,10 +9,40 @@ html {
 body {
   @apply bg-light-bg text-light-primary antialiased dark:bg-base-bg dark:text-text-primary;
   font-feature-settings: 'ss01' on, 'cv01' on;
+  text-rendering: optimizeLegibility;
 }
 
 ::selection {
-  background: rgba(91, 141, 239, 0.35);
+  background: rgba(67, 198, 162, 0.32);
+}
+
+button,
+a,
+input,
+textarea,
+select {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.portfolio-heading {
+  @apply font-semibold tracking-normal text-light-primary dark:text-text-primary;
+  font-family: 'Space Grotesk', 'Noto Sans Thai', sans-serif;
+}
+
+.font-display {
+  font-family: 'Space Grotesk', 'Noto Sans Thai', sans-serif;
+}
+
+.portfolio-eyebrow {
+  @apply font-mono text-xs font-medium uppercase tracking-[0.12em] text-accent;
+}
+
+.portfolio-panel {
+  @apply border border-light-border bg-light-card dark:border-base-border dark:bg-base-card;
+}
+
+.portfolio-link {
+  @apply transition-colors duration-200 hover:text-accent;
 }
 
 /* Custom scrollbar, kept subtle */

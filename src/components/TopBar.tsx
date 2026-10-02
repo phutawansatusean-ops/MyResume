@@ -13,7 +13,7 @@ interface TopBarProps {
 }
 
 const iconButtonClass =
-  'w-9 h-9 rounded-lg border border-light-border dark:border-base-border flex items-center justify-center text-light-secondary dark:text-text-secondary hover:text-light-primary dark:hover:text-text-primary hover:border-accent/50 transition-colors'
+  'grid h-10 w-10 place-items-center border border-light-border dark:border-base-border text-light-secondary dark:text-text-secondary hover:text-light-primary dark:hover:text-text-primary hover:border-accent/50 transition-colors'
 
 export function TopBar({ searchValue, onSearchChange, theme, onToggleTheme }: TopBarProps) {
   const { isAdmin } = useAuth()
@@ -44,7 +44,7 @@ export function TopBar({ searchValue, onSearchChange, theme, onToggleTheme }: To
         <img
           src={profile.avatarUrl || '/avatar.jpg'}
           alt={profile.name}
-          className="w-9 h-9 object-contain shrink-0 border border-light-border dark:border-base-border bg-light-card dark:bg-base-card"
+          className="h-10 w-10 object-contain shrink-0 border border-light-border dark:border-base-border bg-light-card dark:bg-base-card"
         />
       </div>
     </header>

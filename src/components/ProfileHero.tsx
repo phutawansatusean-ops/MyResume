@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { MapPin, Mail, Cake } from 'lucide-react'
+import { ArrowDownRight, ArrowRight, MapPin, Mail, Cake } from 'lucide-react'
 import { Modal } from './Modal'
 import { ResumeDownloadButton } from './ResumeDownloadButton'
 import { Profile } from '../types/profile'
@@ -7,97 +7,51 @@ import { formatBirthDate } from '../lib/format'
 
 interface ProfileHeroProps {
   profile: Profile
+  onViewProjects: () => void
+  onViewActivities: () => void
 }
 
-export function ProfileHero({ profile }: ProfileHeroProps) {
+export function ProfileHero({ profile, onViewProjects, onViewActivities }: ProfileHeroProps) {
   const avatarSrc = profile.avatarUrl || '/avatar.jpg'
   const [isPhotoOpen, setIsPhotoOpen] = useState(false)
 
   return (
-    <section className="relative overflow-hidden rounded-card border border-light-border dark:border-base-border bg-light-card dark:bg-base-card">
-      {/* Mountain / landscape background */}
-      <div className="relative h-52 md:h-64 w-full overflow-hidden">
-        <svg
-          viewBox="0 0 1200 400"
-          preserveAspectRatio="xMidYMax slice"
-          className="absolute inset-0 w-full h-full"
-          aria-hidden="true"
-        >
-          <defs>
-            <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#0D1420" />
-              <stop offset="100%" stopColor="#080B10" />
-            </linearGradient>
-            <linearGradient id="range1" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#1B2735" />
-              <stop offset="100%" stopColor="#111720" />
-            </linearGradient>
-            <linearGradient id="range2" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#243244" />
-              <stop offset="100%" stopColor="#161F2B" />
-            </linearGradient>
-          </defs>
-          <rect width="1200" height="400" fill="url(#sky)" />
-          <path
-            d="M0 260 L140 160 L260 230 L400 110 L560 240 L700 150 L860 250 L1000 130 L1200 220 L1200 400 L0 400 Z"
-            fill="url(#range1)"
-            opacity="0.75"
-          />
-          <path
-            d="M0 320 L180 240 L320 300 L480 200 L640 310 L820 220 L980 300 L1200 260 L1200 400 L0 400 Z"
-            fill="url(#range2)"
-          />
-          <circle cx="1040" cy="90" r="46" fill="#5B8DEF" opacity="0.16" />
-        </svg>
-        <div className="absolute inset-0 bg-gradient-to-t from-light-card dark:from-base-card from-0% via-transparent via-60% to-transparent" />
-      </div>
-
-      {/* Avatar + identity */}
-      <div className="px-6 md:px-10 pb-8 -mt-12 md:-mt-14">
+    <section className="portfolio-panel relative overflow-hidden">
+      <div className="grid min-h-[34rem] md:min-h-[35rem] md:grid-cols-[1.2fr_0.8fr]">
+        <div className="flex flex-col justify-center px-6 py-10 md:px-10 lg:px-14">
+          <p className="portfolio-eyebrow mb-5 flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-accent" /> Software Engineering Portfolio</p>
+          <h1 className="portfolio-heading max-w-3xl break-words text-5xl leading-[1.08]">{profile.name}</h1>
+          <p className="mt-3 text-sm text-accent">Student · Developer · Problem Solver</p>
+          <p className="mt-1 text-sm font-bold text-light-primary dark:text-text-primary">Software Engineering Student at Thammasat University</p>
+          <p className="mt-5 max-w-xl text-sm leading-7 text-light-secondary dark:text-text-secondary">{profile.bio}</p>
+          <div className="mt-7 flex flex-wrap gap-3">
+            <button type="button" onClick={onViewProjects} className="inline-flex min-h-11 items-center gap-2 bg-accent px-4 text-sm font-semibold text-[#10221c] transition-colors hover:bg-accent/85">View projects <ArrowRight size={16} /></button>
+            <button type="button" onClick={onViewActivities} className="inline-flex min-h-11 items-center gap-2 border border-light-border px-4 text-sm font-semibold text-light-primary transition-colors hover:border-accent/60 dark:border-base-border dark:text-text-primary">View activities <ArrowDownRight size={16} /></button>
+          </div>
+          <div className="mt-7"><ResumeDownloadButton /></div>
+          <div className="mt-8 flex flex-wrap gap-x-5 gap-y-2 border-t border-light-border pt-5 text-xs text-light-secondary dark:border-base-border dark:text-text-secondary">
+            <span className="flex items-center gap-1.5"><MapPin size={14} /> {profile.location}</span>
+            <a href={`mailto:${profile.email}`} className="portfolio-link flex items-center gap-1.5"><Mail size={14} /> {profile.email}</a>
+            <span className="flex items-center gap-1.5"><Cake size={14} /> Born {formatBirthDate(profile.birthDate)}</span>
+          </div>
+        </div>
+        <div className="relative flex min-h-[20rem] items-center justify-center overflow-hidden border-t border-light-border bg-[#e8f0eb] p-6 dark:border-base-border dark:bg-[#182622] md:min-h-0 md:border-l md:border-t-0 md:p-8">
+          <div aria-hidden="true" className="absolute inset-0 opacity-30 [background-image:linear-gradient(rgba(67,198,162,0.18)_1px,transparent_1px),linear-gradient(90deg,rgba(67,198,162,0.18)_1px,transparent_1px)] [background-size:32px_32px]" />
+          <div className="absolute left-5 top-5 z-10 border border-light-border bg-light-card/90 px-3 py-2 font-mono text-[11px] text-light-secondary dark:border-base-border dark:bg-base-bg/90 dark:text-text-secondary">profile.tsx <span className="ml-2 text-accent">●</span></div>
         <button
           type="button"
           onClick={() => setIsPhotoOpen(true)}
           aria-label="View profile photo larger"
-          className="block w-32 md:w-[19.125rem] cursor-zoom-in"
+          className="relative z-10 flex h-full max-h-[34rem] min-h-[18rem] w-full cursor-zoom-in items-center justify-center focus-visible:outline-offset-4"
         >
           <img
             src={avatarSrc}
             alt={profile.name}
-            className="block h-auto max-h-[32rem] w-full object-contain"
+            className="block h-full max-h-[34rem] w-full object-contain transition-transform duration-300 hover:scale-[1.015]"
           />
         </button>
 
-        <div className="mt-5 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-          <div>
-            <h1 className="text-2xl md:text-[28px] font-bold tracking-tight text-light-primary dark:text-text-primary">
-              {profile.name}
-            </h1>
-            <p className="mt-1 text-sm md:text-[15px] text-accent font-medium">
-              {profile.tagline}
-            </p>
-            <p className="mt-1 text-sm md:text-[15px] text-accent font-bold">
-              Software Engineering Student at Thammasat University
-            </p>
-          </div>
-
-          <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-light-secondary dark:text-text-secondary">
-            <span className="flex items-center gap-1.5">
-              <MapPin size={15} /> {profile.location}
-            </span>
-            <span className="flex items-center gap-1.5">
-              <Mail size={15} /> {profile.email}
-            </span>
-            <span className="flex items-center gap-1.5">
-              <Cake size={15} /> Born {formatBirthDate(profile.birthDate)}
-            </span>
-          </div>
         </div>
-
-        <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-light-secondary dark:text-text-secondary">
-          {profile.bio}
-        </p>
-
-        <ResumeDownloadButton />
       </div>
 
       {isPhotoOpen && (

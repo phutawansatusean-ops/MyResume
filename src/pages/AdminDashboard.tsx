@@ -65,9 +65,9 @@ export function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-light-bg dark:bg-base-bg text-light-primary dark:text-text-primary">
-      <header className="sticky top-0 z-20 border-b border-light-border dark:border-base-border bg-light-bg/90 dark:bg-base-bg/90 backdrop-blur-sm">
+      <header className="sticky top-0 z-20 border-b border-light-border bg-light-card/95 dark:border-base-border dark:bg-base-bg/95 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto px-4 md:px-8 h-16 flex items-center justify-between gap-3">
-          <h1 className="font-semibold tracking-tight">Admin Dashboard</h1>
+          <h1 className="font-display font-semibold tracking-normal">Admin Dashboard</h1>
           <div className="flex items-center gap-2">
             <Link
               to="/"
@@ -87,7 +87,7 @@ export function AdminDashboard() {
           </div>
         </div>
 
-        <nav className="max-w-6xl mx-auto px-4 md:px-8 flex gap-1" aria-label="Admin sections">
+        <nav className="max-w-6xl mx-auto overflow-x-auto px-4 md:px-8 flex gap-1" aria-label="Admin sections">
           {tabs.map(({ id, label, icon: Icon }) => {
             const active = tab === id
             return (
@@ -110,7 +110,7 @@ export function AdminDashboard() {
         </nav>
       </header>
 
-      <main className="max-w-6xl mx-auto px-4 md:px-8 py-6 md:py-8">
+      <main className="max-w-6xl mx-auto px-4 md:px-8 py-8 md:py-10">
         {usingFallback && (
           <p role="alert" className="mb-6 text-sm text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded-lg px-3 py-2">
             Firebase is not configured, so changes cannot be saved. Copy <code>.env.example</code> to <code>.env</code> and fill in your Firebase values.
@@ -137,7 +137,7 @@ export function AdminDashboard() {
                 Everything visitors see comes from Firebase, so changes appear on the public site right after saving.
               </p>
               <div className="flex flex-wrap gap-3">
-                <button type="button" onClick={() => setTab('projects')} className="px-4 py-2 rounded-lg text-sm font-medium bg-accent text-white hover:bg-accent/90 transition-colors">
+                <button type="button" onClick={() => setTab('projects')} className="min-h-10 px-4 py-2 text-sm font-semibold text-[#10221c] bg-accent hover:bg-accent/85 transition-colors">
                   Manage projects
                 </button>
                 <button type="button" onClick={() => setTab('activities')} className="px-4 py-2 rounded-lg text-sm font-medium border border-light-border dark:border-base-border hover:border-accent/50 transition-colors">

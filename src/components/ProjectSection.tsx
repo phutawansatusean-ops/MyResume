@@ -36,11 +36,11 @@ export function ProjectSection({ projects, searchQuery, onViewDetails, onUploadC
   return (
     <section>
       <div className="flex items-center justify-between gap-4 mb-4">
-        <h2 className="text-lg font-semibold text-light-primary dark:text-text-primary">My Projects</h2>
+        <div><p className="portfolio-eyebrow">Selected work</p><h2 className="portfolio-heading mt-2 text-2xl md:text-3xl">My Projects</h2></div>
         {onUploadClick && (
           <button
             onClick={onUploadClick}
-            className="flex items-center gap-1.5 text-sm font-medium px-3.5 py-2 rounded-lg bg-accent text-white hover:bg-accent/90 transition-colors"
+            className="flex min-h-10 items-center gap-1.5 bg-accent px-3.5 py-2 text-sm font-semibold text-[#10221c] transition-colors hover:bg-accent/85"
           >
             <Plus size={16} />
             Upload Project
