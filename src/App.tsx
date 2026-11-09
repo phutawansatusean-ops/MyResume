@@ -50,7 +50,7 @@ export default function App() {
       <Sidebar activePage={activePage} onNavigate={setActivePage} />
       <MobileNav activePage={activePage} onNavigate={setActivePage} />
 
-      <div className="pb-20 md:pb-0">
+      <div className="pb-32 md:pb-0">
         <TopBar
           searchValue={searchQuery}
           onSearchChange={handleSearchChange}

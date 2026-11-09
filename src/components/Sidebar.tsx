@@ -1,46 +1,45 @@
-import { Home, FolderKanban, User, Mail, CalendarDays } from 'lucide-react'
 import { Page } from '../App'
+import { navigationItems } from './navigationItems'
 
 interface SidebarProps {
   activePage: Page
   onNavigate: (page: Page) => void
 }
 
-const navItems: { id: Page; key: string; label: string; icon: typeof Home }[] = [
-  { id: 'home', key: 'profile', label: 'Profile', icon: User },
-  { id: 'home', key: 'home', label: 'Home', icon: Home },
-  { id: 'works', key: 'works', label: 'My Works', icon: FolderKanban },
-  { id: 'activities', key: 'activities', label: 'My Activities', icon: CalendarDays },
-  { id: 'about', key: 'about', label: 'About Me', icon: User },
-  { id: 'contact', key: 'contact', label: 'Contact', icon: Mail },
-]
-
 export function Sidebar({ activePage, onNavigate }: SidebarProps) {
+  const activeIndex = navigationItems.findIndex(({ id }) => activePage === id)
+
   return (
-    <aside className="sticky top-0 z-30 hidden w-full border-b border-light-border bg-light-card dark:border-base-border dark:bg-base-bg md:block">
-      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-center gap-1 overflow-x-auto px-2" aria-label="Primary">
-        {navItems.map(({ id, key, label, icon: Icon }) => {
-          const isActive = key !== 'profile' && activePage === id
+    <aside className="sticky top-0 z-30 hidden px-4 pt-4 md:block">
+      <nav
+        className="glass-nav relative mx-auto grid h-16 max-w-5xl grid-cols-5 overflow-hidden rounded-full p-1.5 shadow-[0_12px_36px_rgba(7,15,20,0.12)] dark:shadow-[0_12px_40px_rgba(0,0,0,0.34)]"
+        aria-label="Primary navigation"
+      >
+        <span
+          aria-hidden="true"
+          className="glass-nav-indicator absolute inset-y-1.5 left-1.5 rounded-full"
+          style={{ transform: `translateX(${activeIndex * 100}%)` }}
+        />
+        {navigationItems.map(({ id, label, icon: Icon }) => {
+          const isActive = activePage === id
           return (
             <button
-              key={key}
+              key={id}
+              type="button"
               onClick={() => onNavigate(id)}
               aria-current={isActive ? 'page' : undefined}
-              title={label}
-              className={`flex shrink-0 items-center gap-2 whitespace-nowrap rounded-lg px-2.5 py-2 text-sm font-medium transition-colors
-                ${
-                  isActive
-                    ? 'bg-accent/10 text-accent ring-1 ring-inset ring-accent/20'
-                    : 'text-light-secondary dark:text-text-secondary hover:bg-light-bg dark:hover:bg-base-card hover:text-light-primary dark:hover:text-text-primary'
-                }`}
+              className={`relative z-10 flex min-w-0 items-center justify-center gap-2 rounded-full px-2 text-sm font-medium transition-colors duration-300 focus-visible:rounded-full ${
+                isActive
+                  ? 'text-[#148B7A] dark:text-[#5FFFE0] dark:[filter:drop-shadow(0_0_8px_rgba(95,255,224,0.3))]'
+                  : 'text-light-secondary hover:text-light-primary dark:text-text-secondary dark:hover:text-text-primary'
+              }`}
             >
-              <Icon size={17} strokeWidth={isActive ? 2.4 : 2} className="shrink-0" />
-              <span>{label}</span>
+              <Icon size={17} strokeWidth={isActive ? 2.2 : 1.8} className="shrink-0 transition-transform duration-300 hover:scale-105" />
+              <span className="truncate">{label}</span>
             </button>
           )
         })}
       </nav>
-
     </aside>
   )
 }
