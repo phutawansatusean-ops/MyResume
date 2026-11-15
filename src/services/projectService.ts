@@ -1,9 +1,10 @@
-import { child, get, orderByChild, push, query, ref, remove, serverTimestamp, update } from 'firebase/database'
+import { child, get, orderByChild, push, query, ref, serverTimestamp, update } from 'firebase/database'
 import { requireDb } from '../lib/firebase'
 import { Project, ProjectCategory, ProjectImage, ProjectInput } from '../types/project'
 import { deleteImage } from './storageService'
 
 const PATH = 'projects'
+const PUBLIC_PATH = 'publishedProjects'
 const FALLBACK_GRADIENT: [string, string] = ['#132436', '#0A121C']
 
 /**
@@ -87,8 +88,8 @@ function toRecord(input: ProjectInput) {
   }
 }
 
-export async function getProjects(): Promise<Project[]> {
-  const snapshot = await get(query(ref(requireDb(), PATH), orderByChild('order')))
+async function readProjects(path: string): Promise<Project[]> {
+  const snapshot = await get(query(ref(requireDb(), path), orderByChild('order')))
   const projects: Project[] = []
   snapshot.forEach((childSnapshot) => {
     projects.push(toProject(childSnapshot.key as string, childSnapshot.val()))
@@ -97,45 +98,110 @@ export async function getProjects(): Promise<Project[]> {
   return projects
 }
 
+export function getProjects(): Promise<Project[]> {
+  return readProjects(PATH)
+}
+
+export function getPublishedProjects(): Promise<Project[]> {
+  return readProjects(PUBLIC_PATH)
+}
+
+export async function syncPublishedProjects(projects: Project[]): Promise<void> {
+  const db = requireDb()
+  const publicSnapshot = await get(ref(db, PUBLIC_PATH))
+  if (publicSnapshot.exists()) return
+
+  const updates: Record<string, unknown> = {}
+  projects.filter((project) => project.isPublished !== false).forEach((project) => {
+    const { id, ...input } = project
+    updates[`${PUBLIC_PATH}/${id}`] = {
+      ...toRecord(input),
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    }
+  })
+  if (Object.keys(updates).length) await update(ref(db), updates)
+}
+
 export async function createProject(input: ProjectInput): Promise<string> {
   const db = requireDb()
   const newRef = push(ref(db, PATH))
-  await update(newRef, {
+  const record = {
     ...toRecord(input),
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
+  }
+  await update(ref(db), {
+    [`${PATH}/${newRef.key}`]: record,
+    [`${PUBLIC_PATH}/${newRef.key}`]: input.isPublished === false ? null : record,
   })
   return newRef.key as string
 }
 
 export async function updateProject(id: string, input: ProjectInput): Promise<void> {
-  await update(child(ref(requireDb(), PATH), id), {
+  const record = {
     ...toRecord(input),
     updatedAt: serverTimestamp(),
+  }
+  await update(ref(requireDb()), {
+    [`${PATH}/${id}`]: record,
+    [`${PUBLIC_PATH}/${id}`]: input.isPublished === false ? null : record,
   })
 }
 
 export async function setProjectFeatured(id: string, featured: boolean): Promise<void> {
-  await update(child(ref(requireDb(), PATH), id), { featured, updatedAt: serverTimestamp() })
+  const db = requireDb()
+  const snapshot = await get(child(ref(db, PATH), id))
+  if (!snapshot.exists()) throw new Error('This project no longer exists.')
+  const updates: Record<string, unknown> = {
+    [`${PATH}/${id}/featured`]: featured,
+    [`${PATH}/${id}/updatedAt`]: serverTimestamp(),
+  }
+  if (snapshot.child('isPublished').val() !== false) {
+    updates[`${PUBLIC_PATH}/${id}/featured`] = featured
+    updates[`${PUBLIC_PATH}/${id}/updatedAt`] = serverTimestamp()
+  }
+  await update(ref(db), updates)
 }
 
 export async function setProjectPublished(id: string, isPublished: boolean): Promise<void> {
-  await update(child(ref(requireDb(), PATH), id), { isPublished, updatedAt: serverTimestamp() })
+  const db = requireDb()
+  const snapshot = await get(child(ref(db, PATH), id))
+  if (!snapshot.exists()) throw new Error('This project no longer exists.')
+  const record = { ...snapshot.val(), isPublished, updatedAt: serverTimestamp() }
+  await update(ref(db), {
+    [`${PATH}/${id}`]: record,
+    [`${PUBLIC_PATH}/${id}`]: isPublished ? record : null,
+  })
 }
 
 /** Rewrites `order` so the given ids appear in exactly this sequence. */
 export async function reorderProjects(orderedIds: string[]): Promise<void> {
+  const db = requireDb()
+  const publishedSnapshot = await get(ref(db, PUBLIC_PATH))
+  const publishedIds = new Set<string>()
+  publishedSnapshot.forEach((childSnapshot) => {
+    if (childSnapshot.key) publishedIds.add(childSnapshot.key)
+    return false
+  })
   const updates: Record<string, unknown> = {}
   orderedIds.forEach((id, index) => {
     updates[`${PATH}/${id}/order`] = index
     updates[`${PATH}/${id}/updatedAt`] = serverTimestamp()
+    if (publishedIds.has(id)) {
+      updates[`${PUBLIC_PATH}/${id}/order`] = index
+      updates[`${PUBLIC_PATH}/${id}/updatedAt`] = serverTimestamp()
+    }
   })
-  await update(ref(requireDb()), updates)
+  await update(ref(db), updates)
 }
 
 /** Deletes the project node, then its cover image. */
 export async function deleteProject(project: Project): Promise<void> {
-  await remove(child(ref(requireDb(), PATH), project.id))
+  await update(ref(requireDb()), {
+    [`${PATH}/${project.id}`]: null,
+    [`${PUBLIC_PATH}/${project.id}`]: null,
+  })
   await deleteImage(project.image.path).catch(() => {
     // The project is already gone; a leftover image is not worth failing the whole action.
   })
@@ -151,6 +217,7 @@ export async function seedProjects(seed: Omit<Project, 'order'>[]): Promise<void
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     }
+    if (project.isPublished !== false) updates[`${PUBLIC_PATH}/${id}`] = updates[`${PATH}/${id}`]
   })
   await update(ref(requireDb()), updates)
 }

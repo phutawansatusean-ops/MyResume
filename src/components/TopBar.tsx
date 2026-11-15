@@ -1,8 +1,6 @@
-import { Link } from 'react-router-dom'
-import { LayoutDashboard, LogIn, Moon, Sun } from 'lucide-react'
+import { Moon, Sun } from 'lucide-react'
 import { SearchBar } from './SearchBar'
 import { Theme } from '../hooks/useTheme'
-import { useAuth } from '../context/AuthContext'
 import { usePortfolioData } from '../context/PortfolioDataContext'
 
 interface TopBarProps {
@@ -16,7 +14,6 @@ const iconButtonClass =
   'grid h-10 w-10 place-items-center border border-light-border dark:border-base-border text-light-secondary dark:text-text-secondary hover:text-light-primary dark:hover:text-text-primary hover:border-accent/50 transition-colors'
 
 export function TopBar({ searchValue, onSearchChange, theme, onToggleTheme }: TopBarProps) {
-  const { isAdmin } = useAuth()
   const { profile } = usePortfolioData()
 
   return (
@@ -31,15 +28,6 @@ export function TopBar({ searchValue, onSearchChange, theme, onToggleTheme }: To
         >
           {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
         </button>
-
-        <Link
-          to={isAdmin ? '/admin' : '/admin/login'}
-          aria-label={isAdmin ? 'Open admin dashboard' : 'Admin login'}
-          title={isAdmin ? 'Admin dashboard' : 'Login'}
-          className={iconButtonClass}
-        >
-          {isAdmin ? <LayoutDashboard size={16} /> : <LogIn size={16} />}
-        </Link>
 
         <img
           src={profile.avatarUrl || '/avatar.jpg'}

@@ -20,7 +20,6 @@ export async function checkIsAdmin(uid: string): Promise<boolean> {
 export async function loginWithUsername(username: string, password: string): Promise<User> {
   const auth = requireAuth()
   const email = usernameToEmail(username)
-  console.info('[admin-login] Firebase sign-in email:', email)
   const credential = await signInWithEmailAndPassword(auth, email, password)
   let isAdmin: boolean
   try {

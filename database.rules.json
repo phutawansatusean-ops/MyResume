@@ -18,7 +18,7 @@
     },
 
     "projects": {
-      ".read": true,
+      ".read": "auth != null && root.child('admins').child(auth.uid).exists()",
       ".indexOn": ["order"],
       "$projectId": {
         ".write": "auth != null && root.child('admins').child(auth.uid).exists()",
@@ -39,6 +39,16 @@
           }
         },
         "isPublished": { ".validate": "newData.isBoolean()" }
+      }
+    },
+
+    "publishedProjects": {
+      ".read": true,
+      ".write": "auth != null && root.child('admins').child(auth.uid).exists()",
+      ".indexOn": ["order"],
+      "$projectId": {
+        ".validate": "newData.hasChildren(['name', 'description', 'category', 'technologies', 'featured', 'order', 'isPublished']) && newData.child('isPublished').val() === true",
+        "isPublished": { ".validate": "newData.isBoolean() && newData.val() === true" }
       }
     },
 

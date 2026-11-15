@@ -1,14 +1,15 @@
-import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { isFirebaseConfigured } from '../lib/firebase'
 import { describeError } from '../lib/errors'
 import { DEFAULT_PROFILE } from '../data/profile'
 import { initialProjects } from '../data/projects'
-import { getProjects } from '../services/projectService'
+import { getProjects, getPublishedProjects, syncPublishedProjects } from '../services/projectService'
 import { getPublishedActivities } from '../services/activityService'
 import { getProfile } from '../services/profileService'
 import { Profile } from '../types/profile'
 import { Project } from '../types/project'
 import { Activity } from '../types/activity'
+import { useAuth } from './AuthContext'
 
 interface PortfolioDataValue {
   projects: Project[]
@@ -27,14 +28,17 @@ const PortfolioDataContext = createContext<PortfolioDataValue | null>(null)
 const fallbackProjects: Project[] = initialProjects.map((project, index) => ({ ...project, order: index }))
 
 export function PortfolioDataProvider({ children }: { children: ReactNode }) {
+  const { isAdmin } = useAuth()
   const [projects, setProjects] = useState<Project[]>([])
   const [activities, setActivities] = useState<Activity[]>([])
   const [profile, setProfile] = useState<Profile>(DEFAULT_PROFILE)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [activitiesError, setActivitiesError] = useState<string | null>(null)
+  const refreshRequest = useRef(0)
 
   const refresh = useCallback(async () => {
+    const requestId = ++refreshRequest.current
     if (!isFirebaseConfigured) {
       setProjects(fallbackProjects)
       setActivities([])
@@ -47,13 +51,20 @@ export function PortfolioDataProvider({ children }: { children: ReactNode }) {
     setLoading(true)
     setError(null)
     setActivitiesError(null)
+    const loadProjects = isAdmin
+      ? getProjects().then(async (loadedProjects) => {
+          await syncPublishedProjects(loadedProjects)
+          return loadedProjects
+        })
+      : getPublishedProjects()
     const [portfolioResult, activitiesResult] = await Promise.allSettled([
-      Promise.all([getProjects(), getProfile()]),
+      Promise.all([loadProjects, getProfile()]),
       getPublishedActivities(),
     ])
+    if (requestId !== refreshRequest.current) return
     if (portfolioResult.status === 'fulfilled') {
       const [loadedProjects, loadedProfile] = portfolioResult.value
-      setProjects(loadedProjects)
+      setProjects(isAdmin ? loadedProjects : loadedProjects.filter((project) => project.isPublished !== false))
       setProfile(loadedProfile ?? DEFAULT_PROFILE)
     } else {
       setError(describeError(portfolioResult.reason, 'Could not load portfolio data.'))
@@ -65,7 +76,7 @@ export function PortfolioDataProvider({ children }: { children: ReactNode }) {
       setActivitiesError(describeError(activitiesResult.reason, 'Could not load Activities.'))
     }
     setLoading(false)
-  }, [])
+  }, [isAdmin])
 
   useEffect(() => {
     void refresh()
